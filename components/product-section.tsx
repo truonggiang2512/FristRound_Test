@@ -9,7 +9,6 @@ export function ProductSection() {
     limit: 12,
     sort: "createdAt",
   })
-  console.log(products)
   return (
     <div className="bg-gray-50 py-6">
       <div className="container mx-auto px-4">

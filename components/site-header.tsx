@@ -22,7 +22,6 @@ export function SiteHeader() {
 
   return (
     <header className="w-full relative">
-      {/* Top banner with gradient - Hidden on mobile */}
       <div className="hidden md:block w-full bg-gradient-to-r from-blue-600 to-cyan-400 text-white py-2 px-4">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
@@ -54,11 +53,13 @@ export function SiteHeader() {
 
           {/* Mobile Logo */}
           <Link href="/" className="flex-1 flex justify-center">
-            <div className="text-center">
-              <div className="text-lg font-bold">NHÀ THUỐC</div>
-              <div className="text-xs">FPT Retail</div>
-              <div className="text-sm font-semibold">LONG CHÂU</div>
-            </div>
+            <Image
+              src="/logo_sunfil1.png"
+              alt="SUNFIL Logo"
+              width={140}
+              height={40}
+              className="object-contain"
+            />
           </Link>
 
           {/* Mobile Right Section */}

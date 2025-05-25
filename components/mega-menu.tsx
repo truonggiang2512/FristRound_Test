@@ -27,8 +27,8 @@ export function MegaMenu({ isVisible, onMouseEnter, onMouseLeave }: MegaMenuProp
         <div className="flex">
           <CategorySidebar activeCategory={activeCategory} onCategoryHover={setActiveCategory} />
           <div className="flex-1 p-6">
-            <CategoryGrid items={[]} />
-            <BestSellingSection products={[]} />
+            <CategoryGrid />
+            <BestSellingSection />
           </div>
         </div>
       </div>

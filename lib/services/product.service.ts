@@ -82,7 +82,7 @@ export class ProductService {
   static async getProductById(id: string) {
     await connectToDatabase()
 
-    const product = await Product.findById(id).populate("categoryId", "name slug").lean()
+    const product = await Product.findById(id).populate("name slug").lean()
 
     return product
   }
@@ -141,48 +141,5 @@ export class ProductService {
     return true
   }
 
-  static async getFeaturedProducts(limit = 10) {
-    await connectToDatabase()
 
-    return await Product.find({ isFeatured: true, isActive: true })
-      .populate("categoryId", "name slug")
-      .limit(limit)
-      .lean()
-  }
-
-  static async getProductsByCategory(categoryId: string, limit = 10) {
-    await connectToDatabase()
-
-    return await Product.find({ categoryId, isActive: true }).populate("categoryId", "name slug").limit(limit).lean()
-  }
-
-  static async searchProducts(searchTerm: string, limit = 10) {
-    await connectToDatabase()
-
-    return await Product.find({ $text: { $search: searchTerm }, isActive: true }, { score: { $meta: "textScore" } })
-      .sort({ score: { $meta: "textScore" } })
-      .populate("categoryId", "name slug")
-      .limit(limit)
-      .lean()
-  }
-
-  static async updateStock(id: string, quantity: number) {
-    await connectToDatabase()
-
-    const product = await Product.findByIdAndUpdate(
-      id,
-      { $inc: { stock: -quantity } },
-      { new: true, runValidators: true },
-    )
-
-    if (!product) {
-      throw new Error("Product not found")
-    }
-
-    if (product.stock < 0) {
-      throw new Error("Insufficient stock")
-    }
-
-    return product
-  }
 }
