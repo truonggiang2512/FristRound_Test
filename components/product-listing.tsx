@@ -1,7 +1,9 @@
+"use client"
 import { CategoryTabs } from "@/components/category-tabs"
 import { SortOptions } from "@/components/sort-options"
 import { FilterSidebar } from "@/components/filter-sidebar"
 import { ProductGrid } from "./product-grid"
+import { useProducts } from "@/lib/hooks/use-products"
 
 // Sample data
 const categories = [
@@ -84,46 +86,14 @@ function mapProductFromDB(dbProduct: any) {
   }
 }
 
-// Sample DB product data
-const productsFromDB = [
-  {
-    _id: "68328e9e6b7490884dc9afb2",
-    name: "Ford Universal Air Filter",
-    slug: "ford-universal-air-filter-0",
-    description: "Genuine Ford Universal air filter, high quality to protect engine optimally",
-    shortDescription: "Genuine Ford Universal air filter",
-    sku: "AIR-FILTER-FOR-001",
-    price: 143161,
-    comparePrice: 201636,
-    stock: 62,
-    images: ["/placeholder.svg?height=400&width=400"],
-    categoryId: "68328e9e6b7490884dc9afb0",
-    brand: "SAKURA",
-    weight: 1.5172273155247904,
-    dimensions: {
-      length: 29.448051213888128,
-      width: 11.730423988688505,
-      height: 19.706525347700357,
-      unit: "cm"
-    },
-    attributes: [
-      { name: "Car Brand", value: "Ford" },
-      { name: "Car Model", value: "Universal" },
-      { name: "Origin", value: "Vietnam" },
-      { name: "Warranty", value: "12 months" }
-    ],
-    isActive: true,
-    isFeatured: false,
-    tags: ["ford", "universal", "air-filter", "genuine"],
-    ratings: { average: 4.73, count: 35 },
-    createdAt: "2025-05-25T03:29:34.371Z",
-    updatedAt: "2025-05-25T03:29:34.371Z"
-  },
-  // ... more products
-]
-
 export function ProductListing() {
-  const products = productsFromDB.map(mapProductFromDB)
+  const { data: products, isLoading, error } = useProducts({
+    page: 1,
+    limit: 12,
+    sort: "createdAt",
+  })
+  console.log(products)
+  // const products = productsFromDB.map(mapProductFromDB)
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col lg:flex-row gap-6">

@@ -4,7 +4,11 @@ import { ProductCarousel } from "./product-carousel"
 import { useProducts } from "@/lib/hooks/use-products"
 
 export function ProductSection() {
-  const { data: products, isLoading, error } = useProducts()
+  const { data: products, isLoading, error } = useProducts({
+    page: 1,
+    limit: 12,
+    sort: "createdAt",
+  })
   console.log(products)
   return (
     <div className="bg-gray-50 py-6">
