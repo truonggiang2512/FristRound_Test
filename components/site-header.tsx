@@ -3,14 +3,15 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Search, Camera, ShoppingCart, User, Clock, Truck, RotateCcw, Menu, Mic } from "lucide-react"
+import { Search, Camera, ShoppingCart, Clock, Truck, RotateCcw, Menu, Mic } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useAppSelector, useAppDispatch } from "@/lib/redux/hooks"
 import { selectCartTotalItems, setShowCartDropdown } from "@/lib/redux/slices/cartSlice"
 import { MegaMenu } from "@/components/mega-menu"
 import { CartDropdown } from "@/components/cart-dropdown"
-import { MobileMenu } from "./mobile-menu"
+import { MobileMenu } from "@/components/mobile-menu"
+import { UserMenu } from "@/components/auth/user-menu"
 
 export function SiteHeader() {
   const dispatch = useAppDispatch()
@@ -60,16 +61,24 @@ export function SiteHeader() {
             </div>
           </Link>
 
-          {/* Mobile Cart */}
-          <div className="relative" onTouchStart={() => dispatch(setShowCartDropdown(true))}>
-            <Link href="/cart" className="relative">
-              <ShoppingCart className="h-6 w-6 text-white" />
-              {totalItems > 0 && (
-                <div className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                  {totalItems}
-                </div>
-              )}
-            </Link>
+          {/* Mobile Right Section */}
+          <div className="flex items-center space-x-2">
+            {/* Mobile Auth/User Menu */}
+            <div className="mr-2">
+              <UserMenu />
+            </div>
+
+            {/* Mobile Cart */}
+            <div className="relative" onTouchStart={() => dispatch(setShowCartDropdown(true))}>
+              <Link href="/cart" className="relative">
+                <ShoppingCart className="h-6 w-6 text-white" />
+                {totalItems > 0 && (
+                  <div className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {totalItems}
+                  </div>
+                )}
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -102,7 +111,7 @@ export function SiteHeader() {
           <Link href="/" className="flex-shrink-0">
             <div className="relative w-[180px] h-[60px]">
               <Image
-                src="/logo_sunfil1.png"
+                src="/placeholder.svg?height=60&width=180"
                 alt="SUNFIL Logo"
                 width={180}
                 height={60}
@@ -136,7 +145,7 @@ export function SiteHeader() {
             <div className="flex items-center gap-1">
               <div className="w-6 h-6 rounded-full overflow-hidden">
                 <Image
-                  src="/ico-country-c-vietnam.png"
+                  src="/placeholder.svg?height=24&width=24"
                   alt="Vietnam Flag"
                   width={24}
                   height={24}
@@ -168,12 +177,7 @@ export function SiteHeader() {
             </div>
 
             {/* Account */}
-            <div>
-              <Link href="/account" className="flex gap-1 items-center">
-                <User className="h-6 w-6" />
-                <span className="text-sm">Tài khoản</span>
-              </Link>
-            </div>
+            <UserMenu />
           </div>
         </div>
 
