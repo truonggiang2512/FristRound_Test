@@ -2,21 +2,26 @@ import { connectToDatabase } from "@/lib/config/database"
 import { Product } from "@/lib/models"
 import { NextRequest, NextResponse } from "next/server"
 
-// GET /api/products
 export async function GET(request: NextRequest) {
   try {
     await connectToDatabase()
-
     const { searchParams } = new URL(request.url)
+
+    const page = parseInt(searchParams.get("page") || "1")
+    const limit = parseInt(searchParams.get("limit") || "12")
+    const skip = (page - 1) * limit
+
     const filters: any = {}
+    const sort: any = {}
 
     const featured = searchParams.get("featured")
     const search = searchParams.get("search")
     const category = searchParams.get("category")
+    const sortParam = searchParams.get("sort")
 
-    if (featured === "true") filters.featured = true
-    if (category) filters.category = category
-
+    // Filters
+    if (featured === "true") filters.isFeatured = true
+    if (category) filters.categoryId = category
     if (search) {
       filters.$or = [
         { name: { $regex: search, $options: "i" } },
@@ -24,16 +29,38 @@ export async function GET(request: NextRequest) {
       ]
     }
 
-    const products = await Product.find(filters).lean()
+    // Sort
+    if (sortParam === "price_asc") sort.price = 1
+    else if (sortParam === "price_desc") sort.price = -1
+    else if (sortParam === "newest") sort.createdAt = -1
+    else sort.createdAt = -1 // default sort
 
-    return NextResponse.json({ success: true, data: products })
+    // Fetch total before pagination
+    const total = await Product.countDocuments(filters)
+
+    // Fetch products
+    const products = await Product.find(filters)
+      .sort(sort)
+      .skip(skip)
+      .limit(limit)
+      .lean()
+
+    return NextResponse.json({
+      success: true,
+      data: products,
+      total,
+      page,
+      limit,
+    })
   } catch (error) {
     console.error("GET /api/products error:", error)
-    return NextResponse.json({ success: false, error: "Failed to fetch products" }, { status: 500 })
+    return NextResponse.json(
+      { success: false, error: "Failed to fetch products" },
+      { status: 500 }
+    )
   }
 }
 
-// POST /api/products
 export async function POST(request: NextRequest) {
   try {
     await connectToDatabase()
@@ -44,6 +71,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, data: newProduct })
   } catch (error) {
     console.error("POST /api/products error:", error)
-    return NextResponse.json({ success: false, error: "Failed to create product" }, { status: 500 })
+    return NextResponse.json(
+      { success: false, error: "Failed to create product" },
+      { status: 500 }
+    )
   }
 }
