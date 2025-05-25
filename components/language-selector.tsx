@@ -11,8 +11,8 @@ interface Language {
 }
 
 const languages: Language[] = [
-  { code: "vi", name: "VI", flag: "/placeholder.svg?height=20&width=20" },
-  { code: "en", name: "EN", flag: "/placeholder.svg?height=20&width=20" },
+  { code: "vi", name: "VI", flag: "/ico-country-c-vietnam.png" },
+  { code: "en", name: "EN", flag: "/ico-country-c-vietnam.png" },
 ]
 
 export function LanguageSelector() {
@@ -23,7 +23,7 @@ export function LanguageSelector() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 bg-red-600 text-white px-3 py-2 rounded-md hover:bg-red-700 transition-colors"
+        className="flex items-center space-x-2  px-3 py-2 rounded-md transition-colors"
       >
         <div className="w-5 h-5 rounded-full overflow-hidden">
           <Image src={selectedLanguage.flag || "/placeholder.svg"} alt={selectedLanguage.name} width={20} height={20} />

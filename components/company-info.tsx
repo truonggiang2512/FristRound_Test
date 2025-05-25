@@ -22,10 +22,10 @@ export function CompanyInfo() {
       </div>
       <div className="pt-4">
         <Image
-          src="/placeholder.svg?height=60&width=120"
+          src="/bo cong thuong.png"
           alt="Certification Badge"
-          width={120}
-          height={60}
+          width={220}
+          height={120}
           className="object-contain"
         />
       </div>
