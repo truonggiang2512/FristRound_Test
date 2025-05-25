@@ -9,44 +9,44 @@ interface CategoryGridItem {
 }
 
 interface CategoryGridProps {
-  items: CategoryGridItem[]
+  items?: CategoryGridItem[]
 }
 
 const gridItems: CategoryGridItem[] = [
   {
     id: "air-filter-1",
     name: "Bộ lọc gió",
-    icon: "/placeholder.svg?height=48&width=48",
+    icon: "/Image (1).png",
     href: "/categories/air-filter-1",
   },
   {
     id: "air-filter-2",
     name: "Bộ lọc gió",
-    icon: "/placeholder.svg?height=48&width=48",
+    icon: "/Image (1).png",
     href: "/categories/air-filter-2",
   },
   {
     id: "air-filter-3",
     name: "Bộ lọc gió",
-    icon: "/placeholder.svg?height=48&width=48",
+    icon: "/Image (1).png",
     href: "/categories/air-filter-3",
   },
   {
     id: "air-filter-4",
     name: "Bộ lọc gió",
-    icon: "/placeholder.svg?height=48&width=48",
+    icon: "/Image (1).png",
     href: "/categories/air-filter-4",
   },
   {
     id: "air-filter-5",
     name: "Bộ lọc gió",
-    icon: "/placeholder.svg?height=48&width=48",
+    icon: "/Image (1).png",
     href: "/categories/air-filter-5",
   },
   {
     id: "air-filter-6",
     name: "Bộ lọc gió",
-    icon: "/placeholder.svg?height=48&width=48",
+    icon: "/Image (2).png",
     href: "/categories/air-filter-6",
   },
 ]

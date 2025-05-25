@@ -92,7 +92,6 @@ export function ProductListing() {
     limit: 12,
     sort: "createdAt",
   })
-  console.log(products)
   // const products = productsFromDB.map(mapProductFromDB)
   return (
     <div className="container mx-auto px-4 py-8">

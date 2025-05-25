@@ -11,9 +11,9 @@ import {
 import { requireRole } from "@/lib/middleware/auth"
 import mongoose from "mongoose"
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, context: { params: { id: string } }) {
   try {
-    const { id } = params
+    const { id } = context.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return errorResponse("Invalid product ID")

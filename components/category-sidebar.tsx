@@ -20,51 +20,34 @@ const categoryItems: CategoryItem[] = [
   {
     id: "oil-filter",
     name: "Bộ Lọc Dầu",
-    icon: "/placeholder.svg?height=24&width=24",
+    icon: "/Image (1).png",
     href: "/categories/oil-filter",
   },
   {
     id: "air-filter",
     name: "Bộ Lọc Không Khí",
-    icon: "/placeholder.svg?height=24&width=24",
+    icon: "/Image (2).png",
     href: "/categories/air-filter",
   },
   {
     id: "fuel-filter",
     name: "Bộ Lọc Nhiên Liệu",
-    icon: "/placeholder.svg?height=24&width=24",
+    icon: "/Image.png",
     href: "/categories/fuel-filter",
   },
   {
     id: "cabin-filter",
     name: "Bộ Lọc Trong Cabin",
-    icon: "/placeholder.svg?height=24&width=24",
+    icon: "/img.png",
     href: "/categories/cabin-filter",
   },
   {
     id: "air-filter-2",
     name: "Bộ Lọc Không Khí",
-    icon: "/placeholder.svg?height=24&width=24",
+    icon: "/img (1).png",
     href: "/categories/air-filter-2",
   },
-  {
-    id: "cabin-filter-2",
-    name: "Bộ Lọc Trong Cabin",
-    icon: "/placeholder.svg?height=24&width=24",
-    href: "/categories/cabin-filter-2",
-  },
-  {
-    id: "fuel-filter-2",
-    name: "Bộ Lọc Nhiên Liệu",
-    icon: "/placeholder.svg?height=24&width=24",
-    href: "/categories/fuel-filter-2",
-  },
-  {
-    id: "air-filter-3",
-    name: "Bộ Lọc Không Khí",
-    icon: "/placeholder.svg?height=24&width=24",
-    href: "/categories/air-filter-3",
-  },
+
 ]
 
 export function CategorySidebar({ categories = categoryItems, activeCategory, onCategoryHover }: CategorySidebarProps) {
@@ -82,8 +65,8 @@ export function CategorySidebar({ categories = categoryItems, activeCategory, on
               <Image
                 src={category.icon || "/placeholder.svg"}
                 alt={category.name}
-                width={24}
-                height={24}
+                width={44}
+                height={44}
                 className="object-contain"
               />
               <span className="text-sm font-medium text-gray-700">{category.name}</span>
