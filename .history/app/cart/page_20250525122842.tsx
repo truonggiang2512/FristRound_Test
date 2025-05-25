@@ -17,7 +17,7 @@ interface CartItem {
   name: string
   image: string
   price: number
-  originalPrice: number
+  comparePrice?: number
   quantity: number
   unit: string
   discount?: number
@@ -37,7 +37,7 @@ export default function CartPage() {
       name: "Nước Yến Sào Cao Cấp Cho Trẻ Em Nunest Kid Lốc 3+1 (70ml)",
       image: "/placeholder.svg?height=80&width=80",
       price: 105600,
-      originalPrice: 132000,
+      comparePrice: 132000,
       quantity: 1,
       unit: "Lốc",
       discountInfo: "Giảm ngay 20% áp dụng đến 24/05",
@@ -47,7 +47,7 @@ export default function CartPage() {
       name: "Sữa bột Fohepta Vitadairy dinh dưỡng dành cho bệnh nhân gan (400g)",
       image: "/placeholder.svg?height=80&width=80",
       price: 205600,
-      originalPrice: 257000,
+      comparePrice: 257000,
       quantity: 1,
       unit: "Hộp",
       badge: "Flash sale giá sốc",
@@ -58,7 +58,7 @@ export default function CartPage() {
       name: "Sữa ColosIgG 24h Vitadairy hỗ trợ tăng cường miễn dịch và tiêu hóa (60 gói x 1.5g)",
       image: "/placeholder.svg?height=80&width=80",
       price: 367200,
-      originalPrice: 459000,
+      comparePrice: 459000,
       quantity: 1,
       unit: "Hộp",
       badge: "Flash sale giá sốc",
@@ -109,9 +109,9 @@ export default function CartPage() {
 
   // Calculate totals
   const selectedCartItems = cartPageItems.filter((item) => selectedItems.has(item.id))
-  const subtotal = selectedCartItems.reduce((sum, item) => sum + item.originalPrice * item.quantity, 0)
+  const subtotal = selectedCartItems.reduce((sum, item) => sum + (item.comparePrice || item.price) * item.quantity, 0)
   const directDiscount = selectedCartItems.reduce(
-    (sum, item) => sum + (item.originalPrice - item.price) * item.quantity,
+    (sum, item) => sum + ((item.comparePrice ? item.comparePrice - item.price : 0) * item.quantity),
     0,
   )
   const voucherDiscount = 0

@@ -111,7 +111,7 @@ export function SiteHeader() {
           <Link href="/" className="flex-shrink-0">
             <div className="relative w-[180px] h-[60px]">
               <Image
-                src="/placeholder.svg?height=60&width=180"
+                src="/logo_sunfil1.png"
                 alt="SUNFIL Logo"
                 width={180}
                 height={60}
@@ -145,7 +145,7 @@ export function SiteHeader() {
             <div className="flex items-center gap-1">
               <div className="w-6 h-6 rounded-full overflow-hidden">
                 <Image
-                  src="/placeholder.svg?height=24&width=24"
+                  src="/ico-country-c-vietnam.png"
                   alt="Vietnam Flag"
                   width={24}
                   height={24}

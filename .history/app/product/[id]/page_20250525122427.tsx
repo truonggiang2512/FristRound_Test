@@ -39,7 +39,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
       }
     }
     fetchProduct()
-  }, [id])
+  }, [params.id])
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center text-gray-500">Đang tải sản phẩm...</div>

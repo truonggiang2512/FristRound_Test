@@ -5,70 +5,21 @@ import { ChevronLeft } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { CartPageItem } from "./_components/cart-page-item"
+import { CartPageItem, CartPageItemProps } from "./_components/cart-page-item"
 import { CartSummary } from "./_components/cart-summary"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { useAppSelector, useAppDispatch } from "@/lib/redux/hooks"
 import { selectCartItems, removeFromCart, updateQuantity } from "@/lib/redux/slices/cartSlice"
 
-interface CartItem {
-  id: string
-  name: string
-  image: string
-  price: number
-  originalPrice: number
-  quantity: number
-  unit: string
-  discount?: number
-  badge?: string
-  discountInfo?: string
-}
-
 export default function CartPage() {
   const dispatch = useAppDispatch()
   const cartItems = useAppSelector(selectCartItems)
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set(cartItems.map((item) => item.id)))
 
-  // Sample cart items with additional properties for the cart page
-  const cartPageItems: CartItem[] = [
-    {
-      id: "1",
-      name: "Nước Yến Sào Cao Cấp Cho Trẻ Em Nunest Kid Lốc 3+1 (70ml)",
-      image: "/placeholder.svg?height=80&width=80",
-      price: 105600,
-      originalPrice: 132000,
-      quantity: 1,
-      unit: "Lốc",
-      discountInfo: "Giảm ngay 20% áp dụng đến 24/05",
-    },
-    {
-      id: "2",
-      name: "Sữa bột Fohepta Vitadairy dinh dưỡng dành cho bệnh nhân gan (400g)",
-      image: "/placeholder.svg?height=80&width=80",
-      price: 205600,
-      originalPrice: 257000,
-      quantity: 1,
-      unit: "Hộp",
-      badge: "Flash sale giá sốc",
-      discountInfo: "Giảm ngay 20% khi mua Online áp dụng đến 25/05",
-    },
-    {
-      id: "3",
-      name: "Sữa ColosIgG 24h Vitadairy hỗ trợ tăng cường miễn dịch và tiêu hóa (60 gói x 1.5g)",
-      image: "/placeholder.svg?height=80&width=80",
-      price: 367200,
-      originalPrice: 459000,
-      quantity: 1,
-      unit: "Hộp",
-      badge: "Flash sale giá sốc",
-      discountInfo: "Giảm ngay 20% khi mua Online áp dụng đến 25/05",
-    },
-  ]
-
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      setSelectedItems(new Set(cartPageItems.map((item) => item.id)))
+      setSelectedItems(new Set(cartItems.map((item) => item.id)))
     } else {
       setSelectedItems(new Set())
     }
@@ -89,7 +40,8 @@ export default function CartPage() {
   }
 
   const handleUnitChange = (id: string, unit: string) => {
-    // Handle unit change logic here
+    // Update unit in Redux if needed (not implemented in slice yet)
+    // For now, just log
     console.log(`Unit changed for ${id}: ${unit}`)
   }
 
@@ -107,19 +59,19 @@ export default function CartPage() {
     console.log("Proceeding to checkout...")
   }
 
-  // Calculate totals
-  const selectedCartItems = cartPageItems.filter((item) => selectedItems.has(item.id))
-  const subtotal = selectedCartItems.reduce((sum, item) => sum + item.originalPrice * item.quantity, 0)
+  // Calculate totals from Redux cart
+  const selectedCartItems = cartItems.filter((item) => selectedItems.has(item.id))
+  const subtotal = selectedCartItems.reduce((sum, item) => sum + (item.comparePrice || item.price) * item.quantity, 0)
   const directDiscount = selectedCartItems.reduce(
-    (sum, item) => sum + (item.originalPrice - item.price) * item.quantity,
+    (sum, item) => sum + ((item.comparePrice ? item.comparePrice - item.price : 0) * item.quantity),
     0,
   )
   const voucherDiscount = 0
   const savings = directDiscount + voucherDiscount
   const total = subtotal - savings
 
-  const allSelected = selectedItems.size === cartPageItems.length && cartPageItems.length > 0
-  const someSelected = selectedItems.size > 0 && selectedItems.size < cartPageItems.length
+  const allSelected = selectedItems.size === cartItems.length && cartItems.length > 0
+  const someSelected = selectedItems.size > 0 && selectedItems.size < cartItems.length
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -148,7 +100,7 @@ export default function CartPage() {
                     }}
                     onCheckedChange={handleSelectAll}
                   />
-                  <span className="font-medium">Chọn tất cả ({cartPageItems.length})</span>
+                  <span className="font-medium">Chọn tất cả ({cartItems.length})</span>
                 </div>
                 <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-gray-600">
                   <span>Giá thành</span>
@@ -159,10 +111,16 @@ export default function CartPage() {
             </div>
 
             {/* Cart Items List */}
-            {cartPageItems.map((item) => (
+            {cartItems.map((item) => (
               <CartPageItem
                 key={item.id}
-                {...item}
+                id={item.id}
+                name={item.name}
+                image={item.image}
+                price={item.price}
+                comparePrice={item.comparePrice}
+                quantity={item.quantity}
+                unit={item.unit || 'Hộp'}
                 isSelected={selectedItems.has(item.id)}
                 onSelect={handleSelectItem}
                 onQuantityChange={handleQuantityChange}
@@ -171,7 +129,7 @@ export default function CartPage() {
               />
             ))}
 
-            {cartPageItems.length === 0 && (
+            {cartItems.length === 0 && (
               <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
                 <p className="text-gray-500 mb-4">Giỏ hàng của bạn đang trống</p>
                 <Link href="/">

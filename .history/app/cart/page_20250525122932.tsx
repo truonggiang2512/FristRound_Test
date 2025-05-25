@@ -5,25 +5,14 @@ import { ChevronLeft } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import { CartPageItem } from "./_components/cart-page-item"
+import { CartPageItem, type CartPageItemProps } from "./_components/cart-page-item"
 import { CartSummary } from "./_components/cart-summary"
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { useAppSelector, useAppDispatch } from "@/lib/redux/hooks"
 import { selectCartItems, removeFromCart, updateQuantity } from "@/lib/redux/slices/cartSlice"
 
-interface CartItem {
-  id: string
-  name: string
-  image: string
-  price: number
-  originalPrice: number
-  quantity: number
-  unit: string
-  discount?: number
-  badge?: string
-  discountInfo?: string
-}
+interface CartItem extends CartPageItemProps {}
 
 export default function CartPage() {
   const dispatch = useAppDispatch()
@@ -37,7 +26,7 @@ export default function CartPage() {
       name: "Nước Yến Sào Cao Cấp Cho Trẻ Em Nunest Kid Lốc 3+1 (70ml)",
       image: "/placeholder.svg?height=80&width=80",
       price: 105600,
-      originalPrice: 132000,
+      comparePrice: 132000,
       quantity: 1,
       unit: "Lốc",
       discountInfo: "Giảm ngay 20% áp dụng đến 24/05",
@@ -47,7 +36,7 @@ export default function CartPage() {
       name: "Sữa bột Fohepta Vitadairy dinh dưỡng dành cho bệnh nhân gan (400g)",
       image: "/placeholder.svg?height=80&width=80",
       price: 205600,
-      originalPrice: 257000,
+      comparePrice: 257000,
       quantity: 1,
       unit: "Hộp",
       badge: "Flash sale giá sốc",
@@ -58,7 +47,7 @@ export default function CartPage() {
       name: "Sữa ColosIgG 24h Vitadairy hỗ trợ tăng cường miễn dịch và tiêu hóa (60 gói x 1.5g)",
       image: "/placeholder.svg?height=80&width=80",
       price: 367200,
-      originalPrice: 459000,
+      comparePrice: 459000,
       quantity: 1,
       unit: "Hộp",
       badge: "Flash sale giá sốc",
@@ -109,9 +98,9 @@ export default function CartPage() {
 
   // Calculate totals
   const selectedCartItems = cartPageItems.filter((item) => selectedItems.has(item.id))
-  const subtotal = selectedCartItems.reduce((sum, item) => sum + item.originalPrice * item.quantity, 0)
+  const subtotal = selectedCartItems.reduce((sum, item) => sum + (item.comparePrice || item.price) * item.quantity, 0)
   const directDiscount = selectedCartItems.reduce(
-    (sum, item) => sum + (item.originalPrice - item.price) * item.quantity,
+    (sum, item) => sum + ((item.comparePrice ? item.comparePrice - item.price : 0) * item.quantity),
     0,
   )
   const voucherDiscount = 0
@@ -162,7 +151,16 @@ export default function CartPage() {
             {cartPageItems.map((item) => (
               <CartPageItem
                 key={item.id}
-                {...item}
+                id={item.id}
+                name={item.name}
+                image={item.image}
+                price={item.price}
+                comparePrice={item.comparePrice}
+                quantity={item.quantity}
+                unit={item.unit}
+                discount={item.discount}
+                badge={item.badge}
+                discountInfo={item.discountInfo}
                 isSelected={selectedItems.has(item.id)}
                 onSelect={handleSelectItem}
                 onQuantityChange={handleQuantityChange}

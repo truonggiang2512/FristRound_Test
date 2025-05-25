@@ -2,6 +2,7 @@ import { CategoryTabs } from "@/components/category-tabs"
 import { SortOptions } from "@/components/sort-options"
 import { FilterSidebar } from "@/components/filter-sidebar"
 import { ProductGrid } from "./product-grid"
+import { useState } from "react"
 
 // Sample data
 const categories = [
@@ -81,6 +82,10 @@ function mapProductFromDB(dbProduct: any) {
     ratings: dbProduct.ratings,
     brand: dbProduct.brand,
     badge: dbProduct.isFeatured ? "Nổi bật" : undefined,
+    categoryId: dbProduct.categoryId,
+    tags: dbProduct.tags,
+    origin: dbProduct.attributes?.find((a: any) => a.name === "Origin")?.value,
+    year: dbProduct.attributes?.find((a: any) => a.name === "Year")?.value,
   }
 }
 
@@ -97,7 +102,7 @@ const productsFromDB = [
     comparePrice: 201636,
     stock: 62,
     images: ["/placeholder.svg?height=400&width=400"],
-    categoryId: "68328e9e6b7490884dc9afb0",
+    categoryId: "air-filter",
     brand: "SAKURA",
     weight: 1.5172273155247904,
     dimensions: {
@@ -110,7 +115,8 @@ const productsFromDB = [
       { name: "Car Brand", value: "Ford" },
       { name: "Car Model", value: "Universal" },
       { name: "Origin", value: "Vietnam" },
-      { name: "Warranty", value: "12 months" }
+      { name: "Warranty", value: "12 months" },
+      { name: "Year", value: "2021" },
     ],
     isActive: true,
     isFeatured: false,
@@ -123,13 +129,99 @@ const productsFromDB = [
 ]
 
 export function ProductListing() {
+  // Filter state
+  const [activeFilters, setActiveFilters] = useState<{ [groupId: string]: Set<string> }>({})
+  const [activePriceRange, setActivePriceRange] = useState<string | null>(null)
+
   const products = productsFromDB.map(mapProductFromDB)
+
+  // Filtering logic
+  const filteredProducts = products.filter((product) => {
+    // Category, brand, year, origin, tags, etc.
+    for (const group of filterGroups) {
+      const active = activeFilters[group.id]
+      if (active && active.size > 0) {
+        if (group.id === "categories" && !active.has(product.categoryId)) return false
+        if (group.id === "brands" && product.brand && !active.has(product.brand.toLowerCase())) return false
+        if (group.id === "year" && product.year && !active.has(product.year)) return false
+        if (group.id === "origin" && product.origin && !active.has(product.origin.toLowerCase())) return false
+      }
+    }
+    // Price range
+    if (activePriceRange) {
+      const range = priceRanges.find((r) => r.id === activePriceRange)
+      if (range) {
+        if (typeof range.min === "number" && product.price < range.min) return false
+        if (typeof range.max === "number" && product.price > range.max) return false
+      }
+    }
+    return true
+  })
+
+  // Handlers
+  const handleFilterChange = (groupId: string, optionId: string, checked: boolean) => {
+    setActiveFilters((prev) => {
+      const set = new Set(prev[groupId] || [])
+      if (checked) set.add(optionId)
+      else set.delete(optionId)
+      return { ...prev, [groupId]: set }
+    })
+  }
+  const handlePriceRangeChange = (rangeId: string) => {
+    setActivePriceRange(rangeId)
+  }
+  const handleClearFilters = () => {
+    setActiveFilters({})
+    setActivePriceRange(null)
+  }
+
+  // Active filter chips
+  const activeChips: { label: string; onRemove: () => void }[] = []
+  filterGroups.forEach((group) => {
+    const active = activeFilters[group.id]
+    if (active && active.size > 0) {
+      group.options.forEach((option) => {
+        if (active.has(option.id)) {
+          activeChips.push({
+            label: option.label,
+            onRemove: () => handleFilterChange(group.id, option.id, false),
+          })
+        }
+      })
+    }
+  })
+  if (activePriceRange) {
+    const range = priceRanges.find((r) => r.id === activePriceRange)
+    if (range) {
+      activeChips.push({
+        label: range.label,
+        onRemove: () => setActivePriceRange(null),
+      })
+    }
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Filter sidebar */}
-        <div className="w-full lg:w-64 flex-shrink-0">
-          <FilterSidebar filterGroups={filterGroups} priceRanges={priceRanges} />
+        <div className="w-full lg:w-64 flex-shrink-0 lg:sticky lg:top-24 h-fit">
+          <FilterSidebar
+            filterGroups={filterGroups}
+            priceRanges={priceRanges}
+            onFilterChange={handleFilterChange}
+            onPriceRangeChange={handlePriceRangeChange}
+          />
+          {(activeChips.length > 0) && (
+            <div className="flex flex-wrap gap-2 mt-4">
+              {activeChips.map((chip, idx) => (
+                <span key={idx} className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs flex items-center gap-1">
+                  {chip.label}
+                  <button onClick={chip.onRemove} className="ml-1 text-blue-500 hover:text-red-500">×</button>
+                </span>
+              ))}
+              <button onClick={handleClearFilters} className="ml-2 text-xs text-gray-500 underline hover:text-blue-600">Xóa tất cả</button>
+            </div>
+          )}
         </div>
         {/* Product listing */}
         <div className="flex-1">
@@ -141,7 +233,7 @@ export function ProductListing() {
             <SortOptions options={sortOptions} defaultOption="relevant" />
           </div>
           {/* Product grid */}
-          <ProductGrid products={products} />
+          <ProductGrid products={filteredProducts} />
         </div>
       </div>
     </div>

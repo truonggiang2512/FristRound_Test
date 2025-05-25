@@ -12,7 +12,7 @@ interface CartPageItemProps {
   name: string
   image: string
   price: number
-  originalPrice?: number
+  comparePrice?: number
   quantity: number
   unit: string
   discount?: number
@@ -30,7 +30,7 @@ export function CartPageItem({
   name,
   image,
   price,
-  originalPrice,
+  comparePrice,
   quantity,
   unit,
   discount,
@@ -75,7 +75,9 @@ export function CartPageItem({
           <h3 className="text-sm font-medium text-gray-900 mb-2">{name}</h3>
           <div className="flex items-center space-x-2 mb-2">
             <span className="text-blue-600 font-bold text-lg">{price.toLocaleString()}đ</span>
-            {originalPrice && <span className="text-gray-500 text-sm line-through">{originalPrice.toLocaleString()}đ</span>}
+            {comparePrice && comparePrice > price && (
+              <span className="text-gray-500 text-sm line-through">{comparePrice.toLocaleString()}đ</span>
+            )}
           </div>
           {discountInfo && (
             <div className="flex items-center space-x-2 text-sm">

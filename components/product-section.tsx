@@ -1,60 +1,11 @@
+"use client"
 import Image from "next/image"
 import { ProductCarousel } from "./product-carousel"
-import { PromoBanner } from "@/components/promo-banner"
-
-// Sample product data
-const products = [
-  {
-    id: "1",
-    name: "Lọc gió động cơ Air Filter - Chevrolet Colorado, Trailblazer",
-    image: "/placeholder.svg?height=200&width=200",
-    currentPrice: 299000,
-    originalPrice: 329000,
-    discount: 10,
-  },
-  {
-    id: "2",
-    name: "Lọc gió động cơ Air Filter - Chevrolet Colorado, Trailblazer",
-    image: "/placeholder.svg?height=200&width=200",
-    currentPrice: 299000,
-    originalPrice: 329000,
-    discount: 10,
-  },
-  {
-    id: "3",
-    name: "Lọc gió động cơ Air Filter - Chevrolet Colorado, Trailblazer",
-    image: "/placeholder.svg?height=200&width=200",
-    currentPrice: 299000,
-    originalPrice: 329000,
-    discount: 10,
-  },
-  {
-    id: "4",
-    name: "Lọc gió động cơ Air Filter - Chevrolet Colorado, Trailblazer",
-    image: "/placeholder.svg?height=200&width=200",
-    currentPrice: 299000,
-    originalPrice: 329000,
-    discount: 10,
-  },
-  {
-    id: "5",
-    name: "Lọc gió động cơ Air Filter - Chevrolet Colorado, Trailblazer",
-    image: "/placeholder.svg?height=200&width=200",
-    currentPrice: 299000,
-    originalPrice: 329000,
-    discount: 10,
-  },
-  {
-    id: "6",
-    name: "Lọc gió động cơ Air Filter - Chevrolet Colorado, Trailblazer",
-    image: "/placeholder.svg?height=200&width=200",
-    currentPrice: 299000,
-    originalPrice: 329000,
-    discount: 10,
-  },
-]
+import { useProducts } from "@/lib/hooks/use-products"
 
 export function ProductSection() {
+  const { data: products, isLoading, error } = useProducts()
+  console.log(products)
   return (
     <div className="bg-gray-50 py-6">
       <div className="container mx-auto px-4">
@@ -69,8 +20,6 @@ export function ProductSection() {
           </a>
         </nav>
 
-        {/* Promo Banner */}
-        {/* <PromoBanner /> */}
         <Image width={2000} height={2000} alt="banner" src="/banner.png"></Image>
         {/* Product Carousel */}
         <div className="p-6 bg-blue-600 ">

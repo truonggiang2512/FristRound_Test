@@ -12,23 +12,21 @@ import { PromotionalOffers } from "@/app/product/_components/promotional-offers"
 import { QuantitySelector } from "@/app/product/_components/quantity-selector"
 import { useAppDispatch } from "@/lib/redux/hooks"
 import { addToCart, setShowCartDropdown } from "@/lib/redux/slices/cartSlice"
-import {use} from "react"
 
-export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
+export default function ProductPage({ params }: { params: { id: string } }) {
   const dispatch = useAppDispatch()
   const [selectedUnit, setSelectedUnit] = useState("Hộp")
   const [quantity, setQuantity] = useState(1)
   const [product, setProduct] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const {id} = use(params)
 
   useEffect(() => {
     async function fetchProduct() {
       setLoading(true)
       setError(null)
       try {
-        const res = await fetch(`/api/products/${id}`)
+        const res = await fetch(`/api/products/${params.id}`)
         const data = await res.json()
         if (!res.ok || !data.success) throw new Error(data.message || "Không tìm thấy sản phẩm")
         setProduct(data.data)
@@ -39,7 +37,7 @@ export default function ProductPage({ params }: { params: Promise<{ id: string }
       }
     }
     fetchProduct()
-  }, [id])
+  }, [params.id])
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center text-gray-500">Đang tải sản phẩm...</div>

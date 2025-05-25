@@ -68,78 +68,108 @@ const priceRanges = [
   { id: "over-500k", label: "Trên 500,000 đ", min: 500000 },
 ]
 
-// Helper to map DB product to ProductCard/ProductGrid props
-function mapProductFromDB(dbProduct: any) {
-  return {
-    _id: dbProduct._id,
-    name: dbProduct.name,
-    images: dbProduct.images,
-    price: dbProduct.price,
-    comparePrice: dbProduct.comparePrice,
-    shortDescription: dbProduct.shortDescription,
-    attributes: dbProduct.attributes,
-    ratings: dbProduct.ratings,
-    brand: dbProduct.brand,
-    badge: dbProduct.isFeatured ? "Nổi bật" : undefined,
-  }
-}
-
-// Sample DB product data
-const productsFromDB = [
+// Sample product data
+const products = [
   {
-    _id: "68328e9e6b7490884dc9afb2",
-    name: "Ford Universal Air Filter",
-    slug: "ford-universal-air-filter-0",
-    description: "Genuine Ford Universal air filter, high quality to protect engine optimally",
-    shortDescription: "Genuine Ford Universal air filter",
-    sku: "AIR-FILTER-FOR-001",
-    price: 143161,
-    comparePrice: 201636,
-    stock: 62,
-    images: ["/placeholder.svg?height=400&width=400"],
-    categoryId: "68328e9e6b7490884dc9afb0",
-    brand: "SAKURA",
-    weight: 1.5172273155247904,
-    dimensions: {
-      length: 29.448051213888128,
-      width: 11.730423988688505,
-      height: 19.706525347700357,
-      unit: "cm"
-    },
-    attributes: [
-      { name: "Car Brand", value: "Ford" },
-      { name: "Car Model", value: "Universal" },
-      { name: "Origin", value: "Vietnam" },
-      { name: "Warranty", value: "12 months" }
-    ],
-    isActive: true,
-    isFeatured: false,
-    tags: ["ford", "universal", "air-filter", "genuine"],
-    ratings: { average: 4.73, count: 35 },
-    createdAt: "2025-05-25T03:29:34.371Z",
-    updatedAt: "2025-05-25T03:29:34.371Z"
+    id: "1",
+    name: "Lọc gió động cơ Air Filter - Chevrolet Colorado, Trailblazer",
+    image: "/placeholder.svg?height=200&width=200",
+    currentPrice: 299000,
+    originalPrice: 329000,
+    discount: 10,
+    badge: "Giá cực sốc",
   },
-  // ... more products
+  {
+    id: "2",
+    name: "Lọc gió động cơ Air Filter - Chevrolet Colorado, Trailblazer",
+    image: "/placeholder.svg?height=200&width=200",
+    currentPrice: 299000,
+    originalPrice: 329000,
+    discount: 10,
+    badge: "Giá cực sốc",
+  },
+  {
+    id: "3",
+    name: "Lọc gió động cơ Air Filter - Chevrolet Colorado, Trailblazer",
+    image: "/placeholder.svg?height=200&width=200",
+    currentPrice: 299000,
+    originalPrice: 329000,
+    discount: 10,
+    badge: "Giá cực sốc",
+  },
+  {
+    id: "4",
+    name: "Lọc gió động cơ Air Filter - Chevrolet Colorado, Trailblazer",
+    image: "/placeholder.svg?height=200&width=200",
+    currentPrice: 299000,
+    originalPrice: 329000,
+    discount: 10,
+    badge: "Giá cực sốc",
+  },
+  {
+    id: "5",
+    name: "Lọc gió động cơ Air Filter - Chevrolet Colorado, Trailblazer",
+    image: "/placeholder.svg?height=200&width=200",
+    currentPrice: 299000,
+    originalPrice: 329000,
+    discount: 10,
+    badge: "Giá cực sốc",
+  },
+  {
+    id: "6",
+    name: "Lọc gió động cơ Air Filter - Chevrolet Colorado, Trailblazer",
+    image: "/placeholder.svg?height=200&width=200",
+    currentPrice: 299000,
+    originalPrice: 329000,
+    discount: 10,
+    badge: "Giá cực sốc",
+  },
+  {
+    id: "7",
+    name: "Lọc gió động cơ Air Filter - Chevrolet Colorado, Trailblazer",
+    image: "/placeholder.svg?height=200&width=200",
+    currentPrice: 299000,
+    originalPrice: 329000,
+    discount: 10,
+    badge: "Giá cực sốc",
+  },
+  {
+    id: "8",
+    name: "Lọc gió động cơ Air Filter - Chevrolet Colorado, Trailblazer",
+    image: "/placeholder.svg?height=200&width=200",
+    currentPrice: 299000,
+    originalPrice: 329000,
+    discount: 10,
+    badge: "Giá cực sốc",
+  },
 ]
 
 export function ProductListing() {
-  const products = productsFromDB.map(mapProductFromDB)
   return (
     <div className="container mx-auto px-4 py-8">
+
+
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Filter sidebar */}
         <div className="w-full lg:w-64 flex-shrink-0">
           <FilterSidebar filterGroups={filterGroups} priceRanges={priceRanges} />
         </div>
+
         {/* Product listing */}
         <div className="flex-1">
           <div className="flex ">
             <h1 className="text-2xl font-bold mb-6">Danh sách sản phẩm</h1>
+
+            {/* Categories at the top */}
+            {/* <div className="mb-6">
+              <CategoryTabs categories={categories} />
+            </div> */}
           </div>
           {/* Sort options */}
           <div className="mb-6">
             <SortOptions options={sortOptions} defaultOption="relevant" />
           </div>
+
           {/* Product grid */}
           <ProductGrid products={products} />
         </div>
