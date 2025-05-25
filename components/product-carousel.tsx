@@ -71,7 +71,6 @@ export function ProductCarousel({ products = [], isLoading = false, error }: Pro
       </div>
     )
   }
-
   return (
     <div className="relative">
       <div
@@ -79,8 +78,8 @@ export function ProductCarousel({ products = [], isLoading = false, error }: Pro
         className="flex overflow-x-auto scrollbar-hide snap-x scroll-smooth gap-4 pb-4"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
-        {products.map((product) => (
-          <div key={product.id} className="min-w-[220px] snap-start">
+        {products.map((product: any) => (
+          <div key={product._id} className="min-w-[220px] snap-start">
             <ProductCard {...product} />
           </div>
         ))}

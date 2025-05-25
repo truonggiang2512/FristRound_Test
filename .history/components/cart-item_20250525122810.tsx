@@ -9,12 +9,12 @@ interface CartItemProps {
   name: string
   image: string
   price: number
-  originalPrice?: number
+  comparePrice?: number
   quantity: number
   onRemove?: (id: string) => void
 }
 
-export function CartItem({ id, name, image, price, originalPrice, quantity, onRemove }: CartItemProps) {
+export function CartItem({ id, name, image, price, comparePrice, quantity, onRemove }: CartItemProps) {
   return (
     <div className="flex items-center space-x-3 py-3 border-b border-gray-100 last:border-b-0">
       <div className="flex-shrink-0">
@@ -24,7 +24,9 @@ export function CartItem({ id, name, image, price, originalPrice, quantity, onRe
         <h4 className="text-sm font-medium text-gray-900 line-clamp-2 mb-1">{name}</h4>
         <div className="flex items-center space-x-2">
           <span className="text-blue-600 font-semibold">{price.toLocaleString()}đ</span>
-          {originalPrice && <span className="text-gray-500 text-sm line-through">{originalPrice.toLocaleString()}đ</span>}
+          {comparePrice && comparePrice > price && (
+            <span className="text-gray-500 text-sm line-through">{comparePrice.toLocaleString()}đ</span>
+          )}
         </div>
         <div className="text-sm text-gray-600 mt-1">x{quantity} Hộp</div>
       </div>

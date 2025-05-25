@@ -74,8 +74,8 @@ export function CartPageItem({
         <div className="flex-1 min-w-0">
           <h3 className="text-sm font-medium text-gray-900 mb-2">{name}</h3>
           <div className="flex items-center space-x-2 mb-2">
-            <span className="text-blue-600 font-bold text-lg">{currentPrice.toLocaleString()}đ</span>
-            <span className="text-gray-500 text-sm line-through">{originalPrice.toLocaleString()}đ</span>
+            <span className="text-blue-600 font-bold text-lg">{currentPrice}đ</span>
+            <span className="text-gray-500 text-sm line-through">{originalPrice}đ</span>
           </div>
           {discountInfo && (
             <div className="flex items-center space-x-2 text-sm">

@@ -2,12 +2,13 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit"
 import type { RootState } from "@/lib/redux/store"
 
 export interface CartProduct {
-  id: string // product._id
+  id: string
   name: string
   image: string
   price: number
-  originalPrice?: number
+  comparePrice?: number
   quantity: number
+  unit?: string
   brand?: string
   attributes?: { name: string; value: string }[]
 }
@@ -33,8 +34,8 @@ export const cartSlice = createSlice({
         // Item already exists, increase quantity
         state.items[existingItemIndex].quantity += 1
       } else {
-        // Add new item
-        state.items.push({ ...action.payload, quantity: 1 })
+        // Add new item, default unit to 'Hộp' if not provided
+        state.items.push({ ...action.payload, quantity: 1, unit: action.payload.unit || 'Hộp' })
       }
 
       // Show cart dropdown

@@ -4,6 +4,7 @@ import { Inter } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Providers } from "@/lib/redux/providers"
 import { AuthProvider } from "@/lib/contexts/auth-context"
+import { QueryProvider } from "@/lib/providers/query-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -21,9 +22,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <Providers>
-            <AuthProvider>{children}</AuthProvider>
-          </Providers>
+          <QueryProvider>
+            <Providers>
+              <AuthProvider>{children}</AuthProvider>
+            </Providers>
+          </QueryProvider>
         </ThemeProvider>
       </body>
     </html>
